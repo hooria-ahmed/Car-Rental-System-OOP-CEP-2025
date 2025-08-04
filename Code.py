@@ -218,12 +218,12 @@ class Log_in(BaseUserInterface):
             with open("csv_files/users.csv", "r") as file:
                 reader = csv.reader(file)
                 for row in reader:
-                    if row[0] == self.username.get():
+                    if len(row) >= 5 and row[0].strip().lower() == self.username.get().strip().lower():
                         self.username_value = row[0]
-                        self.Name= f"Name: {row[0]}"
-                        self.Address= f"Address: {row[1]}"
+                        self.Name = f"Name: {row[0]}"
+                        self.Address = f"Address: {row[1]}"
                         self.gender_value = row[4].strip()
-                        self.balance=f'Balance: {row[3]}'
+                        self.balance = f'Balance: {row[3]}'
                         Gender = f"Gender: {self.gender_value}"
                         break
 
@@ -1027,7 +1027,10 @@ class admin:
             # Read and insert data from CSV
             with open('csv_files/RentedCars.csv', 'r') as f:
                 reader = csv.reader(f)
-                next(reader)  # Skip the header row
+                try:
+                    next(reader)  # Skip the header row
+                except StopIteration:
+                    pass  # File is empty, nothing to display
 
                 for row in reader:
                     if len(row) >= 4:
